@@ -25,6 +25,43 @@ public class MovieService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public CustomResponse<Movie> getByName(String name) {
+        if (!this.repository.existsByName(name)) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    404,
+                    "No se encontro con ese nombre"
+            );
+        }
+        return new CustomResponse<>(
+                this.repository.findByName(name).get(),
+                false,
+                200,
+                "ok"
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public CustomResponse<Movie> getByDirector(String director) {
+        if (!this.repository.existsByDirector(director)) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    404,
+                    "No se encontraron peliculas"
+            );
+        }
+
+        return new CustomResponse<>(
+                this.repository.findByDirector(director).get(),
+                false,
+                200,
+                "ok"
+        );
+    }
+
     @Transactional(rollbackFor = {Exception.class})
     public CustomResponse<Movie> insert(Movie movie) {
         return new CustomResponse<>(

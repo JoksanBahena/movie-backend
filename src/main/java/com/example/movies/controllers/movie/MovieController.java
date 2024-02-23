@@ -5,6 +5,7 @@ import com.example.movies.models.movie.Movie;
 import com.example.movies.services.MovieService;
 import com.example.movies.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,16 @@ public class MovieController {
     @GetMapping("/")
     public ResponseEntity<CustomResponse<List<Movie>>> getAll() {
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<CustomResponse<Movie>> getMovieByName(@PathVariable String name) {
+        return new ResponseEntity<>(this.service.getByName(name), HttpStatus.OK);
+    }
+
+    @GetMapping("/director/{director}")
+    public ResponseEntity<CustomResponse<Movie>> getMovieByDirector(@PathVariable String director) {
+        return new ResponseEntity<>(this.service.getByDirector(director), HttpStatus.OK);
     }
 
     @PostMapping("/")
