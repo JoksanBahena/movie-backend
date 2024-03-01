@@ -11,7 +11,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Optional<Movie> findByDirector(String director);
     boolean existsByName(String name);
     boolean existsByDirector(String director);
-    boolean existsById(Long id);
+
 
     @Query(
         value = "SELECT * FROM movies WHERE publication_date = :date_start AND publication_date = :date_end", nativeQuery = true

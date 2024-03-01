@@ -35,6 +35,11 @@ public class MovieController {
         return new ResponseEntity<>(this.service.getByDirector(director), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomResponse<Movie>> getMovieById(@PathVariable long id) {
+        return new ResponseEntity<>(this.service.getById(id), HttpStatus.OK);
+    }
+
     @PostMapping("/")
     public ResponseEntity<CustomResponse<Movie>> insert(@Valid @RequestBody MovieDto movieDto) {
         System.out.println(movieDto.getName());
@@ -49,5 +54,10 @@ public class MovieController {
     public ResponseEntity<CustomResponse<String>> update(@Valid @PathVariable long id, @RequestBody MovieDto movieDto) {
         movieDto.setId(id);
         return new ResponseEntity<>(this.service.update(movieDto.castToMovie()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id:[0-9]+}")
+    public ResponseEntity<CustomResponse<String>> delete(@PathVariable long id) {
+        return new ResponseEntity<>(this.service.delete(id), HttpStatus.OK);
     }
 }

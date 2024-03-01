@@ -72,23 +72,59 @@ public class MovieService {
         );
     }
 
-    @Transactional(rollbackFor = {Exception.class})
-    public CustomResponse<String> update(Movie movie) {
-        if (!this.repository.existsById(movie.getId())) {
+        @Transactional(rollbackFor = {Exception.class})
+            public CustomResponse<String> update(Movie movie) {
+                if (!this.repository.existsById(movie.getId())) {
+                    return new CustomResponse<>(
+                            null,
+                            true,
+                            404,
+                            "No existe la pelicula"
+                    );
+                }
+
+                this.repository.saveAndFlush(movie);
+                return new CustomResponse<>(
+                        null,
+                        false,
+                        200,
+                        "Pelicula actualizada correctamente"
+        );}
+
+     @Transactional(rollbackFor = {Exception.class})
+        public CustomResponse<String> delete(long id) {
+            if (!this.repository.existsById(id)) {
+                return new CustomResponse<>(
+                        null,
+                        true,
+                        404,
+                        "No existe la pelicula"
+                );
+            }
+
+            this.repository.deleteById(id);
+            return new CustomResponse<>(
+                    null,
+                    false,
+                    200,
+                    "Pelicula eliminada correctamente"
+            );
+        }
+
+    @Transactional(readOnly = true)
+    public CustomResponse<Movie> getById(long id) {
+        if (!this.repository.existsById(id)) {
             return new CustomResponse<>(
                     null,
                     true,
                     404,
-                    "No existe la pelicula"
+                    "No se encontro la pelicula"
             );
         }
-
-        this.repository.saveAndFlush(movie);
         return new CustomResponse<>(
-                null,
+                this.repository.findById(id).get(),
                 false,
                 200,
-                "Pelicula actualizada correctamente"
-);
-    }
+                "ok"
+        );}
 }
